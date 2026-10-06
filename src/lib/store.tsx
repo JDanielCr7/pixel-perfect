@@ -13,7 +13,7 @@ export interface Service { id: string; name: string; description: string; price:
 export interface Payment { method: "TARJETA" | "PSE" | "EFECTIVO"; status: "PENDIENTE" | "APROBADO" | "RECHAZADO" | "CANCELADO"; reference: string; amount: number; date: string; }
 export interface Booking {
   id: string; userId: string; motoId: string; serviceId: string; date: string; time: string;
-  address: string; notes: string; lat?: number; lng?: number; status: Status; washer?: string;
+  address: string; notes: string; lat?: number | undefined; lng?: number | undefined; status: Status; washer?: string | undefined;
   payment: Payment; rating?: number; comment?: string; createdAt: string;
 }
 export interface Notif { id: string; userId: string; text: string; date: string; read: boolean; }
@@ -40,8 +40,8 @@ function seed(): DB {
       { id: "m2", userId: u.id, brand: "Honda", model: "CB190R", year: 2020, plate: "XYZ34E", color: "Rojo", cc: 184 },
     ],
     bookings: [
-      { id: "b1", userId: u.id, motoId: "m1", serviceId: "premium", date: today(-12), time: "10:00", address: "Cra 15 #93-20, Bogotá", notes: "", status: "FINALIZADO", washer: WASHERS[0], payment: pay(45000, "APROBADO"), rating: 5, comment: "Excelente", createdAt: new Date().toISOString() },
-      { id: "b2", userId: u.id, motoId: "m2", serviceId: "basic", date: today(1), time: "08:00", address: "Calle 72 #10-34, Bogotá", notes: "Parqueadero sótano", status: "LAVADOR_ASIGNADO", washer: WASHERS[1], payment: pay(25000, "APROBADO"), createdAt: new Date().toISOString() },
+      { id: "b1", userId: u.id, motoId: "m1", serviceId: "premium", date: today(-12), time: "10:00", address: "Cra 15 #93-20, Bogotá", notes: "", status: "FINALIZADO", washer: WASHERS[0]!, payment: pay(45000, "APROBADO"), rating: 5, comment: "Excelente", createdAt: new Date().toISOString() },
+      { id: "b2", userId: u.id, motoId: "m2", serviceId: "basic", date: today(1), time: "08:00", address: "Calle 72 #10-34, Bogotá", notes: "Parqueadero sótano", status: "LAVADOR_ASIGNADO", washer: WASHERS[1]!, payment: pay(25000, "APROBADO"), createdAt: new Date().toISOString() },
     ],
     notifs: [{ id: "n1", userId: u.id, text: "Andrea fue asignada a tu lavado de mañana.", date: new Date().toISOString(), read: false }],
   };
@@ -114,8 +114,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     advanceBooking(id) {
       const b = db.bookings.find((x) => x.id === id); if (!b) return;
       const i = STATUS_FLOW.indexOf(b.status); if (i < 0 || i >= STATUS_FLOW.length - 1) return;
-      const next = STATUS_FLOW[i + 1];
-      const washer = b.washer ?? (next === "LAVADOR_ASIGNADO" ? WASHERS[Math.floor(Math.random() * 2)] : undefined);
+      const next = STATUS_FLOW[i + 1]!;
+      const washer = b.washer ?? (next === "LAVADOR_ASIGNADO" ? WASHERS[Math.floor(Math.random() * 2)]! : undefined);
       setDb({ ...db, bookings: db.bookings.map((x) => (x.id === id ? { ...x, status: next, washer, payment: { ...x.payment, status: next === "FINALIZADO" ? "APROBADO" : x.payment.status } } : x)), notifs: notify(db, `Tu servicio ahora está: ${STATUS_LABEL[next]}.`) });
     },
     rateBooking(id, rating, comment) { setDb({ ...db, bookings: db.bookings.map((b) => (b.id === id ? { ...b, rating, comment } : b)) }); },

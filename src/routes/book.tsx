@@ -5,7 +5,7 @@ import { AppShell } from "@/components/AppShell";
 import { SERVICES, cop, useStore, type Payment } from "@/lib/store";
 
 export const Route = createFileRoute("/book")({
-  validateSearch: (s: Record<string, unknown>): { service?: string } => ({ service: typeof s.service === "string" ? s.service : undefined }),
+  validateSearch: (s: Record<string, unknown>): { service?: string | undefined } => ({ service: typeof s["service"] === "string" ? (s["service"] as string) : undefined }),
   head: () => ({ meta: [{ title: "Agendar lavado – MotoClean" }, { name: "description", content: "Agenda tu lavado de moto a domicilio." }, { property: "og:title", content: "Agendar lavado – MotoClean" }, { property: "og:description", content: "Agenda tu lavado a domicilio." }] }),
   component: () => <AppShell title="Agendar lavado"><Book /></AppShell>,
 });
