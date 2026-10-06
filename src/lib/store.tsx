@@ -23,7 +23,7 @@ export const SERVICES: Service[] = [
   { id: "premium", name: "Lavado premium", description: "Lavado profundo con desengrase y brillo.", price: 45000, minutes: 70, includes: ["Todo lo del básico", "Desengrase de motor", "Lubricación de cadena", "Cera y brillo"] },
   { id: "maint", name: "Lavado + mantenimiento visual", description: "Premium más revisión visual de tu moto.", price: 65000, minutes: 90, includes: ["Todo lo del premium", "Revisión de llantas", "Revisión de luces", "Reporte de estado"] },
 ];
-const WASHERS = ["Carlos Pérez (DEMO)", "Andrea Gómez (DEMO)"];
+export const WASHERS = ["Carlos Pérez (DEMO)", "Andrea Gómez (DEMO)"];
 
 interface DB { users: User[]; motos: Moto[]; bookings: Booking[]; notifs: Notif[]; session: string | null; }
 const uid = () => Math.random().toString(36).slice(2, 10);
