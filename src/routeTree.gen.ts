@@ -18,6 +18,7 @@ import { Route as MotorcyclesRouteImport } from './routes/motorcycles'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as WasherRouteImport } from './routes/washer'
 import { Route as BookingIdRouteImport } from './routes/booking.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -65,6 +66,11 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WasherRoute = WasherRouteImport.update({
+  id: '/washer',
+  path: '/washer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BookingIdRoute = BookingIdRouteImport.update({
   id: '/booking/$id',
   path: '/booking/$id',
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/washer': typeof WasherRoute
   '/booking/$id': typeof BookingIdRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/washer': typeof WasherRoute
   '/booking/$id': typeof BookingIdRoute
 }
 export interface FileRoutesById {
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/washer': typeof WasherRoute
   '/booking/$id': typeof BookingIdRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/services'
+    | '/washer'
     | '/booking/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/services'
+    | '/washer'
     | '/booking/$id'
   id:
     | '__root__'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/services'
+    | '/washer'
     | '/booking/$id'
   fileRoutesById: FileRoutesById
 }
@@ -157,6 +169,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
+  WasherRoute: typeof WasherRoute
   BookingIdRoute: typeof BookingIdRoute
 }
 
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/washer': {
+      id: '/washer'
+      path: '/washer'
+      fullPath: '/washer'
+      preLoaderRoute: typeof WasherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/booking/$id': {
       id: '/booking/$id'
       path: '/booking/$id'
@@ -245,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,
+  WasherRoute: WasherRoute,
   BookingIdRoute: BookingIdRoute,
 }
 export const routeTree = rootRouteImport
