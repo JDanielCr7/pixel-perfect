@@ -68,15 +68,13 @@
   h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
 }
 
-@layer components {
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all disabled:opacity-50; }
-  .btn-primary { @apply btn bg-primary text-primary-foreground hover:brightness-110 active:scale-[0.98]; box-shadow: var(--shadow-glow); }
-  .btn-ghost { @apply btn border border-border bg-secondary/40 text-foreground hover:bg-secondary; }
-  .btn-danger { @apply btn bg-destructive text-destructive-foreground hover:brightness-110; }
-  .card { @apply rounded-xl border border-border bg-card p-5; }
-  .input { @apply w-full rounded-lg border border-input bg-background/60 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring; }
-  .label { @apply mb-1.5 block text-xs font-medium uppercase tracking-wider text-muted-foreground; }
-  .chip { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold; }
-  .demo-badge { @apply chip bg-accent text-accent-foreground; }
-  .hero-overlay { background: var(--gradient-hero); }
-}
+@utility btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all disabled:opacity-50; }
+@utility btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all disabled:opacity-50 bg-primary text-primary-foreground hover:brightness-110 active:scale-[0.98]; box-shadow: var(--shadow-glow); }
+@utility btn-ghost { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all disabled:opacity-50 border border-border bg-secondary/40 text-foreground hover:bg-secondary; }
+@utility btn-danger { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all disabled:opacity-50 bg-destructive text-destructive-foreground hover:brightness-110; }
+@utility card { @apply rounded-xl border border-border bg-card p-5; }
+@utility input { @apply w-full rounded-lg border border-input bg-background/60 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring; }
+@utility label { @apply mb-1.5 block text-xs font-medium uppercase tracking-wider text-muted-foreground; }
+@utility chip { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold; }
+@utility demo-badge { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-accent text-accent-foreground; }
+@utility hero-overlay { background: var(--gradient-hero); }
