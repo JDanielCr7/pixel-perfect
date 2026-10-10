@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { Bell, Bike, CalendarPlus, History, LayoutDashboard, LogOut, Sparkles, User } from "lucide-react";
+import { Bell, Bike, CalendarPlus, History, LayoutDashboard, LineChart, LogOut, Sparkles, User } from "lucide-react";
 import { useStore, STATUS_LABEL, type Status } from "@/lib/store";
 
 export function Logo() {
@@ -17,6 +17,7 @@ const NAV = [
   { to: "/book", label: "Agendar", icon: CalendarPlus },
   { to: "/motorcycles", label: "Mis motos", icon: Bike },
   { to: "/history", label: "Historial", icon: History },
+  { to: "/simulator", label: "Simulador", icon: LineChart },
   { to: "/profile", label: "Perfil", icon: User },
 ] as const;
 
@@ -64,7 +65,7 @@ export function AppShell({ title, children }: { title: string; children: ReactNo
         <h1 className="mb-6 text-3xl font-bold">{title}</h1>
         {children}
       </main>
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-border bg-background/95 backdrop-blur md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-6 border-t border-border bg-background/95 backdrop-blur md:hidden">
         {NAV.map((n) => (
           <Link key={n.to} to={n.to} className="flex flex-col items-center gap-1 py-2 text-[11px] text-muted-foreground" activeProps={{ className: "text-primary" }}>
             <n.icon className="h-5 w-5" />{n.label}
