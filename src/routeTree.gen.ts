@@ -18,6 +18,7 @@ import { Route as MotorcyclesRouteImport } from './routes/motorcycles'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as WasherRouteImport } from './routes/washer'
 import { Route as BookingIdRouteImport } from './routes/booking.$id'
 
@@ -66,6 +67,11 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SimulatorRoute = SimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WasherRoute = WasherRouteImport.update({
   id: '/washer',
   path: '/washer',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/simulator': typeof SimulatorRoute
   '/washer': typeof WasherRoute
   '/booking/$id': typeof BookingIdRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/simulator': typeof SimulatorRoute
   '/washer': typeof WasherRoute
   '/booking/$id': typeof BookingIdRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/simulator': typeof SimulatorRoute
   '/washer': typeof WasherRoute
   '/booking/$id': typeof BookingIdRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/services'
+    | '/simulator'
     | '/washer'
     | '/booking/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/services'
+    | '/simulator'
     | '/washer'
     | '/booking/$id'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/services'
+    | '/simulator'
     | '/washer'
     | '/booking/$id'
   fileRoutesById: FileRoutesById
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
+  SimulatorRoute: typeof SimulatorRoute
   WasherRoute: typeof WasherRoute
   BookingIdRoute: typeof BookingIdRoute
 }
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/simulator': {
+      id: '/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/washer': {
       id: '/washer'
       path: '/washer'
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,
+  SimulatorRoute: SimulatorRoute,
   WasherRoute: WasherRoute,
   BookingIdRoute: BookingIdRoute,
 }
