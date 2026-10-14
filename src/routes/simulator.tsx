@@ -74,7 +74,7 @@ const Tag = ({ kind }: { kind: "manual" | "hist" | "sim" }) => (
     {kind === "hist" ? "Dato histórico" : kind === "sim" ? "Resultado simulado" : "Parámetro manual"}
   </span>
 );
-function Kpi({ label, value, hint, tone }: { label: string; value: string; hint?: string; tone?: "good" | "bad" }) {
+function Kpi({ label, value, hint, tone }: { label: string; value: string; hint?: string | undefined; tone?: "good" | "bad" | undefined }) {
   return (
     <div className="card p-4">
       <p className="text-xs text-muted-foreground">{label}</p>
