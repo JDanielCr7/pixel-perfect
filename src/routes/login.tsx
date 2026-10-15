@@ -17,7 +17,7 @@ function Login() {
   const submit = (e: FormEvent) => {
     e.preventDefault();
     const r = login(email, pw);
-    if (r) setErr(r); else nav({ to: email.trim().toLowerCase() === "gerente@demo.com" ? "/simulator" : "/dashboard" });
+    if (r) setErr(r); else nav({ to: "/dashboard" });
   };
   return (
     <div className="grid min-h-screen place-items-center px-4">
@@ -29,6 +29,7 @@ function Login() {
         {err && <p className="text-sm text-destructive">{err}</p>}
         <button className="btn-primary w-full">Entrar</button>
         <button type="button" className="btn-ghost w-full" onClick={() => { setEmail("cliente@demo.com"); setPw("demo1234"); }}>Usar cuenta DEMO</button>
+        <button type="button" className="btn-ghost w-full" onClick={() => { setEmail("gerente@demo.com"); setPw("gerente1234"); }}>Usar cuenta Gerente (DEMO)</button>
         <p className="text-center text-sm text-muted-foreground">¿Sin cuenta? <Link to="/register" className="text-primary">Regístrate</Link></p>
         <p className="text-center text-sm text-muted-foreground">¿Eres lavador? <Link to="/washer" className="text-primary">Entra al panel del lavador</Link></p>
       </form>
