@@ -17,7 +17,7 @@ function Login() {
   const submit = (e: FormEvent) => {
     e.preventDefault();
     const r = login(email, pw);
-    if (r) setErr(r); else nav({ to: "/dashboard" });
+    if (r) setErr(r); else nav({ to: email.trim().toLowerCase() === "gerente@demo.com" ? "/simulator" : "/dashboard" });
   };
   return (
     <div className="grid min-h-screen place-items-center px-4">

@@ -22,7 +22,7 @@ export const Route = createFileRoute("/simulator")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: () => <AppShell title="Simulador de escenarios"><Simulator /></AppShell>,
+  component: () => <AppShell title="Simulador de escenarios" onlyGerente><Simulator /></AppShell>,
 });
 
 const SIMS_KEY = "motoclean-sims-v1";
