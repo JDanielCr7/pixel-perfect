@@ -16,6 +16,8 @@ export interface Booking {
   address: string; notes: string; lat?: number | undefined; lng?: number | undefined; status: Status; washer?: string | undefined;
   payment: Payment; rating?: number; comment?: string; createdAt: string;
 }
+export type Role = "cliente" | "gerente";
+export interface UserRole { userId: string; role: Role }
 export interface Notif { id: string; userId: string; text: string; date: string; read: boolean; }
 
 export const SERVICES: Service[] = [
@@ -25,16 +27,27 @@ export const SERVICES: Service[] = [
 ];
 export const WASHERS = ["Carlos Pérez (DEMO)", "Andrea Gómez (DEMO)"];
 
-interface DB { users: User[]; motos: Moto[]; bookings: Booking[]; notifs: Notif[]; session: string | null; }
+interface DB { users: User[]; roles: UserRole[]; motos: Moto[]; bookings: Booking[]; notifs: Notif[]; session: string | null; }
 const uid = () => Math.random().toString(36).slice(2, 10);
 const today = (d = 0) => new Date(Date.now() + d * 864e5).toISOString().slice(0, 10);
+
+const GERENTE: User = { id: "gerente1", name: "Gerente MotoClean (DEMO)", email: "gerente@demo.com", phone: "3001112233", password: "gerente1234" };
+
+/** Asegura que bases guardadas antes de existir los roles tengan la tabla y el gerente de pruebas. */
+function migrate(d: DB): DB {
+  const users = d.users.some((u) => u.id === GERENTE.id) ? d.users : [...d.users, GERENTE];
+  const roles = d.roles ?? [];
+  const withRoles = users.map((u) => roles.find((r) => r.userId === u.id) ?? { userId: u.id, role: (u.id === GERENTE.id ? "gerente" : "cliente") as Role });
+  return { ...d, users, roles: withRoles };
+}
 
 function seed(): DB {
   const u: User = { id: "demo1", name: "Laura Cliente (DEMO)", email: "cliente@demo.com", phone: "3000000000", password: "demo1234" };
   const pay = (amount: number, status: Payment["status"]): Payment => ({ method: "TARJETA", status, reference: "DEMO-" + uid().toUpperCase(), amount, date: new Date().toISOString() });
   return {
     session: null,
-    users: [u],
+    users: [u, GERENTE],
+    roles: [{ userId: u.id, role: "cliente" }, { userId: GERENTE.id, role: "gerente" }],
     motos: [
       { id: "m1", userId: u.id, brand: "Yamaha", model: "MT-03", year: 2022, plate: "ABC12D", color: "Azul", cc: 321 },
       { id: "m2", userId: u.id, brand: "Honda", model: "CB190R", year: 2020, plate: "XYZ34E", color: "Rojo", cc: 184 },
@@ -49,7 +62,7 @@ function seed(): DB {
 
 const KEY = "motoclean-db-v1";
 interface Ctx {
-  db: DB; ready: boolean; user: User | null;
+  db: DB; ready: boolean; user: User | null; role: Role | null;
   login(email: string, pw: string): string | null;
   register(d: Omit<User, "id">): string | null;
   logout(): void;
@@ -65,20 +78,21 @@ interface Ctx {
 const C = createContext<Ctx | null>(null);
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [db, setDb] = useState<DB>(() => ({ users: [], motos: [], bookings: [], notifs: [], session: null }));
+  const [db, setDb] = useState<DB>(() => ({ users: [], roles: [], motos: [], bookings: [], notifs: [], session: null }));
   const [ready, setReady] = useState(false);
   useEffect(() => {
     const raw = localStorage.getItem(KEY);
-    setDb(raw ? JSON.parse(raw) : seed());
+    setDb(raw ? migrate(JSON.parse(raw)) : seed());
     setReady(true);
   }, []);
   useEffect(() => { if (ready) localStorage.setItem(KEY, JSON.stringify(db)); }, [db, ready]);
 
   const user = db.users.find((u) => u.id === db.session) ?? null;
+  const role = user ? db.roles.find((r) => r.userId === user.id)?.role ?? "cliente" : null;
   const notify = (d: DB, text: string): Notif[] => user ? [{ id: uid(), userId: user.id, text, date: new Date().toISOString(), read: false }, ...d.notifs] : d.notifs;
 
   const value: Ctx = {
-    db, ready, user,
+    db, ready, user, role,
     login(email, pw) {
       const u = db.users.find((x) => x.email.toLowerCase() === email.toLowerCase().trim() && x.password === pw);
       if (!u) return "Correo o contraseña incorrectos";
@@ -87,7 +101,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     register(d) {
       if (db.users.some((x) => x.email.toLowerCase() === d.email.toLowerCase())) return "Ya existe una cuenta con ese correo";
       const u = { ...d, id: uid() };
-      setDb({ ...db, users: [...db.users, u], session: u.id, notifs: [{ id: uid(), userId: u.id, text: "¡Bienvenido a MotoClean! Registra tu primera moto.", date: new Date().toISOString(), read: false }, ...db.notifs] });
+      setDb({ ...db, users: [...db.users, u], roles: [...db.roles, { userId: u.id, role: "cliente" }], session: u.id, notifs: [{ id: uid(), userId: u.id, text: "¡Bienvenido a MotoClean! Registra tu primera moto.", date: new Date().toISOString(), read: false }, ...db.notifs] });
       return null;
     },
     logout() { setDb({ ...db, session: null }); },
